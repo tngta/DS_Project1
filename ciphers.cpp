@@ -54,6 +54,9 @@ int main() {
               "generator: ";
       getline(cin, seed_str);
       Random::seed(stoi(seed_str));
+    } 
+    else if (command == "C" || command == "c") {
+      caesarEncryptCommand();
     }
 
     cout << endl;
@@ -84,16 +87,46 @@ void printMenu() {
 
 char rot(char c, int amount) {
   // TODO: student
+  size_t pos = ALPHABET.find(c);
+  if (pos != string::npos) {
+    int wrappedPos = (pos + amount) % 26;
+    if (wrappedPos < 0) {
+      wrappedPos += 26;
+    }
+    return ALPHABET.at(wrappedPos);
+  }
   return 'A';
 }
 
 string rot(const string& line, int amount) {
   // TODO: student
-  return "";
+  string res;
+  for (char c : line) {
+    if (isalpha(c)){
+      char upperChar = toupper(c);
+      res += rot(upperChar, amount);
+    } else if (isspace(c)) {
+      res += c;
+    }
+  }
+  return res;
 }
 
 void caesarEncryptCommand() {
   // TODO: student
+  string text;
+  int rotation;
+  string res;
+
+  cout << "Enter a text you want to read: " << endl;
+  getline(cin, text);
+  
+  cout << "Enter an mount you want to rotate: ";
+  cin >> rotation;
+   
+  res = rot(text, rotation);
+  cout << "Encrypted text is: " << res << endl;
+
 }
 
 #pragma endregion CaesarEnc
